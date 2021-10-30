@@ -1,0 +1,31 @@
+2020-12-30 18:17:48,011 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2020-12-30 18:17:48,115 INFO o.a.j.JMeter: Loading user properties from: /opt/jmeter/bin/user.properties
+2020-12-30 18:17:48,115 INFO o.a.j.JMeter: Loading system properties from: /opt/jmeter/bin/system.properties
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: Version 5.2.1
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: java.version=11.0.8
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: os.name=Linux
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: os.arch=amd64
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: os.version=4.15.0-88-generic
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: file.encoding=UTF-8
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: java.awt.headless=true
+2020-12-30 18:17:48,117 INFO o.a.j.JMeter: Max memory     =1073741824
+2020-12-30 18:17:48,118 INFO o.a.j.JMeter: Available Processors =8
+2020-12-30 18:17:48,139 INFO o.a.j.JMeter: Default Locale=English (EN)
+2020-12-30 18:17:48,140 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2020-12-30 18:17:48,140 INFO o.a.j.JMeter: JMeterHome=/opt/jmeter
+2020-12-30 18:17:48,140 INFO o.a.j.JMeter: user.dir  =/home/pedro/OneDrive/1Mes/1Sem/ASof/softarch2020-05/architecture
+2020-12-30 18:17:48,140 INFO o.a.j.JMeter: PWD       =/home/pedro/OneDrive/1Mes/1Sem/ASof/softarch2020-05/architecture
+2020-12-30 18:17:48,140 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: pedro-X550JK FullName: pedro-X550JK
+2020-12-30 18:17:48,142 ERROR o.a.j.JMeter: An error occurred: 
+java.lang.IllegalArgumentException: Cannot write to '/home/pedro/OneDrive/1Mes/1Sem/ASof/softarch2020-05/architecture/../../architecture/scalability/300-students-in-class-quiz-answer-stress-results' as folder does not exist and parent folder is not writable
+	at org.apache.jorphan.util.JOrphanUtils.canSafelyWriteToFolder(JOrphanUtils.java:671) ~[jorphan.jar:5.2.1]
+	at org.apache.jorphan.util.JOrphanUtils.canSafelyWriteToFolder(JOrphanUtils.java:619) ~[jorphan.jar:5.2.1]
+	at org.apache.jmeter.JMeter.extractAndSetReportOutputFolder(JMeter.java:594) ~[ApacheJMeter_core.jar:5.2.1]
+	at org.apache.jmeter.JMeter.start(JMeter.java:548) [ApacheJMeter_core.jar:5.2.1]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
+	at org.apache.jmeter.NewDriver.main(NewDriver.java:253) [ApacheJMeter.jar:5.2.1]

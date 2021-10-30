@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "quizzes.store.url",
+      "type": "java.lang.String",
+      "description": "Description for quizzes.store.url."
+    }
+  ] }

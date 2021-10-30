@@ -1,0 +1,156 @@
+version: '3.3'
+services:
+  postgres:
+    image: 'postgres:alpine'
+    container_name: postgres
+    command: postgres -c 'max_connections=50'
+    ports:
+      - '5433:5432'
+    restart: unless-stopped
+    volumes:
+      - ./data/dumps/demo.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./data/dumps:/dumps
+    env_file:
+      - ./data/env/database.dev.env
+
+  micropostgres-1:
+    image: 'postgres:alpine'
+    container_name: micropostgres-1
+    command: postgres -c "max_connections=50"
+    ports:
+      - '5434:5432'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/microdatabase.dev.env
+
+  micropostgres-2:
+    image: 'postgres:alpine'
+    container_name: micropostgres-2
+    command: postgres -c "max_connections=50"
+    ports:
+      - '5435:5432'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/microdatabase.dev.env
+
+  micropostgres-3:
+    image: 'postgres:alpine'
+    container_name: micropostgres-3
+    command: postgres -c "max_connections=50"
+    ports:
+      - '5436:5432'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/microdatabase.dev.env
+
+  backend:
+    build: ./backend/
+    image: tutor-backend
+    container_name: backend
+    depends_on:
+      - answerservice1
+      - answerservice2
+      - answerservice3
+      - postgres
+    links:
+      - postgres
+    ports:
+      - '8080:8080'
+    restart: unless-stopped
+    volumes:
+      - './data/images:/images'
+      - './data/load:/load'
+      - './data/export:/export'
+    env_file:
+      - ./data/env/backend.dev.env
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tutordb'
+
+  answerservice1:
+    build: ./answerservice/
+    image: answer-service
+    container_name: answerservice1
+    depends_on:
+      - micropostgres-1
+    links:
+      - micropostgres-1
+      - mosquitto
+    ports:
+      - '8083:8083'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/answerservice.dev.env
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://micropostgres-1:5432/answersdb'
+
+  answerservice2:
+    build: ./answerservice/
+    image: answer-service
+    container_name: answerservice2
+    depends_on:
+      - micropostgres-2
+      - mosquitto
+    links:
+      - micropostgres-2
+    ports:
+      - '8084:8083'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/answerservice.dev.env
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://micropostgres-2:5432/answersdb'
+
+  answerservice3:
+    build: ./answerservice/
+    image: answer-service
+    container_name: answerservice3
+    depends_on:
+      - mosquitto
+      - micropostgres-3
+    links:
+      - micropostgres-3
+    ports:
+      - '8085:8083'
+    restart: unless-stopped
+    env_file:
+      - ./data/env/answerservice.dev.env
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://micropostgres-3:5432/answersdb'
+
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: dev
+    image: tutor-frontend
+    container_name: frontend
+    depends_on:
+      - backend
+      - answerservice1
+      - answerservice2
+      - answerservice3
+    ports:
+      - '8082:80'
+    restart: unless-stopped
+    volumes:
+      - './data/localhost-nginx.conf:/etc/nginx/nginx.conf'
+      - './data/error.log:/var/log/nginx/error.log'
+      - './data/access.log:/var/log/nginx/access.log'
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - 1884:1883
+      - 8884:8883
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-logs:/mosquitto/logs
+      - mosquitto-conf:/mosquitto/config
+    restart: unless-stopped
+
+volumes:
+  mosquitto-data:
+  mosquitto-logs:
+  mosquitto-conf:
